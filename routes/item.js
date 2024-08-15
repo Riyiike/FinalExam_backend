@@ -38,12 +38,12 @@ router.get('/getitem/:id', async (req, res) => {
 
 
 // PUT api/item/:id - Update an item by ID
-router.put('/item/:_id', async (req, res) => {
+router.put('/item/:id', async (req, res) => {
     try {
-        const item = await Item.findOneAndUpdate(
-            { id: req.params.id },
+        const item = await Item.findByIdAndUpdate(
+            req.params.id,  // Use the _id directly for the query
             { name: req.body.name, price: req.body.price, description: req.body.description },
-            { new: true }
+            { new: true }  // This option returns the updated document
         );
         if (!item) return res.status(404).json({ message: 'Item not found' });
         res.json(item);
@@ -53,9 +53,9 @@ router.put('/item/:_id', async (req, res) => {
 });
 
 // DELETE api/item/:id - Delete an item by ID
-router.delete('/item/:_id', async (req, res) => {
+router.delete('/item/:id', async (req, res) => {
     try {
-        const item = await Item.findOneAndDelete({ id: req.params.id });
+        const item = await Item.findByIdAndDelete(req.params.id);  // Use the _id directly for the query
         if (!item) return res.status(404).json({ message: 'Item not found' });
         res.json({ message: 'Item deleted' });
     } catch (err) {
@@ -66,13 +66,14 @@ router.delete('/item/:_id', async (req, res) => {
 // GET api/getrandomitem - Get a random item
 router.get('/getrandomitem', async (req, res) => {
     try {
-        const count = await Item.countDocuments();
+        const count = await Item.countDocuments();  // Count total items in the collection
         const random = Math.floor(Math.random() * count);
-        const item = await Item.findOne().skip(random);
+        const item = await Item.findOne().skip(random);  // Skip to the random item
         res.json(item);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
+
 
 module.exports = router;

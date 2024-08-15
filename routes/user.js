@@ -5,8 +5,8 @@ const User = require('../models/user');
 
 // POST api/newuser - Create a new user
 router.post('/newuser', async (req, res) => {
-    const { id, email, username } = req.body;
-    const newUser = new User({ id, email, username });
+    const { email, username } = req.body;
+    const newUser = new User({ email, username });
 
     try {
         const savedUser = await newUser.save();
@@ -29,7 +29,7 @@ router.get('/getusers', async (req, res) => {
 // GET api/getuser/:id - Get user by ID
 router.get('/getuser/:id', async (req, res) => {
     try {
-        const user = await User.findOne({ id: req.params.id });
+        const user = await User.findById(req.params.id); // Use findById for MongoDB's _id
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.json(user);
     } catch (err) {
@@ -37,46 +37,30 @@ router.get('/getuser/:id', async (req, res) => {
     }
 });
 
-
 // PUT /user/:id - Update a user by ID
-router.put('/item/:id', async (req, res) => {
+router.put('/user/:id', async (req, res) => {
     try {
-        const item = await Item.findByIdAndUpdate(
-            req.params.id,  // Use the _id directly for the query
-            { name: req.body.name, price: req.body.price, description: req.body.description },
-            { new: true }  // This option returns the updated document
+        const user = await User.findByIdAndUpdate(
+            req.params.id, 
+            { email: req.body.email, username: req.body.username },
+            { new: true }
         );
-        if (!item) return res.status(404).json({ message: 'Item not found' });
-        res.json(item);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
 });
 
-
 // DELETE /user/:id - Delete a user by ID
-router.delete('/item/:id', async (req, res) => {
+router.delete('/user/:id', async (req, res) => {
     try {
-        const item = await Item.findByIdAndDelete(req.params.id); 
-        if (!item) return res.status(404).json({ message: 'Item not found' });
-        res.json({ message: 'Item deleted' });
+        const user = await User.findByIdAndDelete(req.params.id); 
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json({ message: 'User deleted' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
-
-
-// GET api/getrandomitem - Get a random item
-router.get('/getrandomitem', async (req, res) => {
-    try {
-        const count = await Item.countDocuments();  
-        const random = Math.floor(Math.random() * count);
-        const item = await Item.findOne().skip(random);  
-        res.json(item);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
 
 module.exports = router;

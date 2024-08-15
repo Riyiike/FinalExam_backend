@@ -6,4 +6,4 @@ const itemSchema = new mongoose.Schema({
     description: { type: String }
 });
 
-module.exports = mongoose.model('Item', itemSchema);
+module.exports = mongoose.model('Item', itemSchema,'FinalExam24');
