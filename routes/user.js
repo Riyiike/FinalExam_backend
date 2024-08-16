@@ -8,7 +8,6 @@ router.post('/newuser', async (req, res) => {
     const { email, username } = req.body;
 
     try {
-        // Check if a user with the same email or username already exists
         const existingUser = await User.findOne({ 
             $or: [{ email }, { username }] 
         });
