@@ -2,8 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const userRoutes = require('./routes/user');
-const itemRoutes = require('./routes/item');
+const bookRoutes = require('./routes/book');
 
 
 dotenv.config();
@@ -12,7 +11,7 @@ const app = express();
 
 app.use(cors());
 
-const PORT = process.env.PORT || 3300;
+const PORT = process.env.PORT || 5001;
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -20,7 +19,7 @@ app.use(express.json());
 // Database connection to MongoDB Atlas using Mongoose
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI_ATLAS, {
+        await mongoose.connect(process.env.URI, {
         });
         console.log('MongoDB Atlas connected...');
     } catch (err) {
@@ -32,8 +31,7 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
-app.use('/api', userRoutes); 
-app.use('/api', itemRoutes);
+app.use('/api/v1/book', bookRoutes); 
 
 
 app.get('/', (req, res) => {
