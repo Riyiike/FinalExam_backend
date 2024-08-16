@@ -1,5 +1,5 @@
 {
-  "name": "final_backend",
+  "name": "restapi_mongo",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {

@@ -28,8 +28,8 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
-app.use('/api/users', userRoutes); 
-app.use('/api/items', itemRoutes);
+app.use('/api', userRoutes); 
+app.use('/api', itemRoutes);
 
 
 app.get('/', (req, res) => {

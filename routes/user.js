@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 
 
-// POST api/newuser - Create a new user
+// POST  - Create a new user
 router.post('/newuser', async (req, res) => {
     const { email, username } = req.body;
     const newUser = new User({ email, username });
@@ -26,10 +26,10 @@ router.get('/getusers', async (req, res) => {
     }
 });
 
-// GET api/getuser/:id - Get user by ID
+//  Get user by ID
 router.get('/getuser/:id', async (req, res) => {
     try {
-        const user = await User.findById(req.params.id); // Use findById for MongoDB's _id
+        const user = await User.findById(req.params.id); 
         if (!user) return res.status(404).json({ message: 'User not found' });
         res.json(user);
     } catch (err) {
@@ -37,7 +37,7 @@ router.get('/getuser/:id', async (req, res) => {
     }
 });
 
-// PUT /user/:id - Update a user by ID
+// Update a user by ID
 router.put('/user/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(
@@ -51,8 +51,8 @@ router.put('/user/:id', async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 });
-
-// DELETE /user/:id - Delete a user by ID
+ 
+//  Delete a user by ID
 router.delete('/user/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id); 
